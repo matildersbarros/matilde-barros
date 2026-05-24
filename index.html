@@ -1,0 +1,1573 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matilde Barros</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:               #F3F5F9;
+      --cream:            #E8ECF3;
+      --text:             #1C2B38;
+      --muted:            #637080;
+      --border:           rgba(28,43,56,0.11);
+      --steel:            #4A83A0;
+      --steel-light:      #C1D8E5;
+      --blue:             #2D6189;
+      --blue-light:       #B9D3E8;
+      --sky:              #6BACC0;
+      --sky-light:        #BDD6E4;
+      --serif:            'Cormorant Garamond', Georgia, serif;
+      --sans:             'DM Sans', system-ui, sans-serif;
+      --shadow:           0 2px 20px rgba(28,43,56,0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.72;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(243,245,249,0.94);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.6rem;
+    }
+    .nav-links a {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+    }
+
+    /* ── SHARED ──────────────────────────────────────── */
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section-block {
+      padding: 5.5rem 2rem;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .section-block + .section-block {
+      border-top: 1px solid var(--border);
+    }
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+    }
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.22;
+      margin-bottom: 2.2rem;
+    }
+    h2 .sub {
+      display: block;
+      font-size: 0.68em;
+      color: var(--muted);
+      font-weight: 400;
+      margin-top: 0.15em;
+    }
+
+    /* scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.22s; }
+    .reveal-delay-3 { transition-delay: 0.34s; }
+
+    /* work items slide in from slightly left */
+    .work-item.reveal { transform: translateX(-14px) translateY(20px); }
+    .work-item.reveal.visible { transform: none; }
+
+    /* vol gallery images stagger in */
+    .vol-item.reveal.visible .vol-gallery img { animation: galleryIn 0.55s cubic-bezier(0.22,1,0.36,1) both; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(1) { animation-delay: 0.05s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(2) { animation-delay: 0.12s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(3) { animation-delay: 0.19s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(4) { animation-delay: 0.26s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(5) { animation-delay: 0.33s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(6) { animation-delay: 0.40s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(7) { animation-delay: 0.47s; }
+    .vol-item.reveal.visible .vol-gallery img:nth-child(8) { animation-delay: 0.54s; }
+
+    /* date tag */
+    .date-tag {
+      font-size: 0.78rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    #hello {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 92vh;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 3rem 5rem max(3rem, calc((100vw - 980px)/2 + 2rem));
+    }
+    .hero-text h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 500;
+      line-height: 1.18;
+      margin-bottom: 1.6rem;
+    }
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--blue);
+    }
+    .hero-text p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 0.8rem;
+    }
+    .hero-quote {
+      margin-top: 1.6rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--blue-light);
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.97rem;
+      color: var(--muted);
+      max-width: 380px;
+    }
+    .hero-image {
+      overflow: hidden;
+      min-height: 60vh;
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+
+    /* ── ABOUT ────────────────────────────────────────── */
+    #about p {
+      font-size: 1.08rem;
+      line-height: 1.82;
+      max-width: 640px;
+      margin-bottom: 0.9rem;
+    }
+    #about p:first-of-type {
+      font-size: 1.18rem;
+      color: var(--text);
+      line-height: 1.85;
+    }
+    #about p:last-child { margin-bottom: 0; }
+
+    /* ── ACADEMIC ─────────────────────────────────────── */
+    .uni-block { margin-bottom: 3.5rem; }
+    .uni-block:last-child { margin-bottom: 0; }
+
+    /* University banner */
+    .uni-banner {
+      position: relative;
+      width: 100%;
+      height: 210px;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.6rem;
+    }
+    .uni-banner > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .uni-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, rgba(243,245,249,0.97) 0%, rgba(243,245,249,0.88) 38%, rgba(243,245,249,0.18) 100%);
+    }
+    .uni-banner-text {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.75rem 2.25rem;
+    }
+    .uni-banner-text h3 {
+      font-family: var(--serif);
+      font-size: 1.55rem;
+      font-weight: 500;
+      line-height: 1.25;
+      margin-bottom: 0.3rem;
+    }
+    .uni-banner-text .degree-line {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 0.7rem;
+    }
+    .uni-banner-text .doc-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px solid var(--blue-light);
+      padding-bottom: 1px;
+      width: fit-content;
+      transition: border-color 0.2s;
+    }
+    .uni-banner-text .doc-link:hover { border-color: var(--blue); }
+    .uni-banner-text .doc-link + .doc-link { margin-top: 0.3rem; }
+    .uni-track {
+      font-size: 0.84rem;
+      font-style: italic;
+      color: var(--muted);
+      margin: 0 0 1.6rem;
+    }
+
+    /* PDF cards */
+    .deliverable-group { margin-bottom: 2rem; }
+    .group-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    .group-label em {
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0;
+      font-style: italic;
+    }
+    .pdf-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .pdf-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      flex: 1;
+      min-width: 190px;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .pdf-card:hover {
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
+    /* The poster gets its own slightly roomier card */
+    .pdf-card.featured {
+      flex-basis: 100%;
+      background: var(--steel-light);
+      border-color: rgba(74,131,160,0.28);
+      padding: 1.1rem 1.4rem;
+    }
+    .pdf-icon {
+      width: 34px;
+      height: 42px;
+      border-radius: 3px;
+      background: var(--blue-light);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--blue);
+    }
+    .pdf-card.featured .pdf-icon {
+      background: rgba(74,131,160,0.32);
+      color: var(--steel);
+    }
+    .pdf-title {
+      font-size: 0.88rem;
+      font-weight: 500;
+      line-height: 1.35;
+      margin-bottom: 0.15rem;
+    }
+    .pdf-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+    .pdf-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-top: 0.35rem;
+    }
+
+    /* Right now box */
+    .right-now {
+      background: rgba(74,131,160,0.1);
+      border-radius: 0 10px 10px 0;
+      border-left: 3px solid var(--steel);
+      padding: 1.4rem 1.6rem;
+      margin-top: 1.5rem;
+    }
+    .right-now h4 {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--steel);
+      margin-bottom: 0.5rem;
+    }
+    .right-now p {
+      font-size: 0.93rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 580px;
+    }
+    .right-now-imgs {
+      display: flex;
+      gap: 0.6rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .right-now-imgs img {
+      height: 130px;
+      flex: 1;
+      min-width: 100px;
+      max-width: 220px;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+
+    /* IST deliverables */
+    .ist-list { margin-top: 1rem; }
+    .ist-item {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .ist-item:last-child { border-bottom: none; }
+    .hw-list { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .hw-entry p { margin-bottom: 0.3rem; }
+    .hw-entry .pdf-link { font-size: 0.85rem; }
+    .ist-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.25rem;
+    }
+    .ist-row h4 {
+      font-family: var(--serif);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .pt-note {
+      font-size: 0.74rem;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .ist-item p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.68;
+      max-width: 580px;
+      margin-bottom: 0.65rem;
+    }
+    .pdf-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.87rem;
+      font-weight: 500;
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px solid var(--blue-light);
+      padding-bottom: 1px;
+      transition: border-color 0.2s;
+    }
+    .pdf-link:hover { border-color: var(--blue); }
+    .pdf-link .size-note {
+      font-weight: 400;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+
+    /* ── WORK ─────────────────────────────────────────── */
+    .work-item {
+      padding: 2.2rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .work-item:last-child { border-bottom: none; }
+    .work-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.2rem;
+    }
+    .work-title {
+      font-family: var(--serif);
+      font-size: 1.18rem;
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .work-org {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .work-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      max-width: 600px;
+    }
+    .work-desc a {
+      color: var(--blue);
+      text-decoration: none;
+      border-bottom: 1px solid var(--blue-light);
+      transition: border-color 0.2s;
+    }
+    .work-desc a:hover { border-color: var(--blue); }
+    .work-imgs {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.1rem;
+      flex-wrap: wrap;
+    }
+    .work-imgs img {
+      height: 150px;
+      flex: 1;
+      min-width: 100px;
+      max-width: 280px;
+      object-fit: cover;
+      border-radius: 7px;
+    }
+    .work-imgs img.contain {
+      object-fit: contain;
+      background: transparent;
+    }
+
+    /* ── VOLUNTEERING ─────────────────────────────────── */
+    .vol-item { margin-bottom: 3.5rem; }
+    .vol-item:last-child { margin-bottom: 0; }
+    .vol-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .vol-title {
+      font-family: var(--serif);
+      font-size: 1.28rem;
+      font-weight: 500;
+    }
+    .vol-desc {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 1.3rem;
+    }
+    .vol-gallery {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.6rem;
+    }
+    .vol-gallery img {
+      width: 100%;
+      height: 230px;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.25s;
+    }
+    .vol-gallery img:hover { transform: scale(1.02); }
+
+    /* ── HOBBIES ──────────────────────────────────────── */
+    .hobby-h3 {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 500;
+      display: inline-block;
+      margin-bottom: 0.85rem;
+      line-height: 1.2;
+    }
+    .hobby-intro {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 560px;
+      line-height: 1.78;
+      margin-bottom: 1.6rem;
+    }
+
+    /* Watercolour pairs */
+    .wc-section { margin-bottom: 5rem; }
+    .wc-pairs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.4rem;
+    }
+    .wc-pair {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(44,40,37,0.1);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .wc-pair:hover {
+      box-shadow: 0 8px 36px rgba(44,40,37,0.16);
+      transform: translateY(-3px);
+    }
+    .wc-imgs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3px;
+      overflow: hidden;
+    }
+    .wc-imgs img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      transition: filter 0.3s;
+    }
+    .wc-pair:hover .wc-imgs img { filter: brightness(1.04); }
+    .wc-caption {
+      font-family: var(--serif);
+      font-size: 0.82rem;
+      color: var(--blue);
+      font-style: italic;
+      text-align: center;
+      padding: 0.55rem 0.75rem 0.65rem;
+      background: var(--cream);
+      letter-spacing: 0.01em;
+    }
+
+    /* Hiking */
+    .hiking-section { margin-bottom: 4rem; }
+    .hiking-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 0.6rem;
+    }
+    .hiking-grid--four { grid-template-columns: repeat(4, 1fr); }
+    .hiking-grid img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .hiking-grid img:hover { transform: scale(1.015); }
+
+    /* Dog */
+    .dog-section {
+      margin-bottom: 3.5rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    .dog-section img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .dog-text h3 { margin-bottom: 0.6rem; }
+    .dog-text p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* Reading */
+    .reading-section {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+    .book-cover {
+      width: 180px;
+      border-radius: 3px;
+      box-shadow: 4px 5px 18px rgba(44,40,37,0.18);
+    }
+    .reading-text h3 { margin-bottom: 0.6rem; }
+    .reading-text p {
+      font-size: 0.95rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 1rem;
+    }
+    .reading-outdoor {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      object-position: center 20%;
+      border-radius: 10px;
+      margin-top: 1.8rem;
+      display: block;
+    }
+    .reading-caption {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+      text-align: right;
+      padding-right: 0.25rem;
+    }
+
+    /* Lego */
+    .lego-section { margin-bottom: 3.5rem; }
+    .lego-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 1.4rem;
+    }
+    .lego-grid img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 9px;
+      display: block;
+      transition: transform 0.3s;
+    }
+    .lego-grid img:hover { transform: scale(1.015); }
+
+    /* ── LIGHTBOX ────────────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,18,16,0.93);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 5rem;
+    }
+    #lightbox.open { display: flex; }
+    #lb-img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+      animation: lbIn 0.2s ease;
+      cursor: default;
+    }
+    @keyframes lbIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    #lb-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 2.2rem;
+      line-height: 1;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    #lb-close:hover { color: #fff; }
+    #lb-prev, #lb-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.12);
+      border: none;
+      color: #fff;
+      font-size: 2rem;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 1;
+    }
+    #lb-prev { left: 1.25rem; }
+    #lb-next { right: 1.25rem; }
+    #lb-prev:hover, #lb-next:hover { background: rgba(255,255,255,0.25); }
+    #lb-prev[hidden], #lb-next[hidden] { display: none; }
+    #lb-counter {
+      position: absolute;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255,255,255,0.5);
+      font-size: 0.78rem;
+      font-family: var(--sans);
+      letter-spacing: 0.06em;
+    }
+    #lb-counter[hidden] { display: none; }
+    img { cursor: zoom-in; }
+
+    /* h2 italic accent word */
+    h2 em { font-style: italic; color: var(--blue); }
+
+    /* Work entries with logo badges */
+    .work-row-right { display: flex; align-items: center; gap: 0.9rem; }
+    .work-row.has-badge { align-items: center; }
+    .mission-badge { height: 52px; width: 52px; object-fit: contain; flex-shrink: 0; border-radius: 50%; }
+    .school-badge { height: 44px; width: 44px; object-fit: contain; flex-shrink: 0; border-radius: 6px; }
+    .featured-work { position: relative; }
+    .tech-diagram-box {
+      margin-top: 1.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .tech-diagram-box img {
+      max-height: 340px;
+      max-width: 100%;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    /* Section accent lines */
+    .section-block + .section-block { border-top: 1px solid var(--border); }
+
+    /* ── PERSONALITY ──────────────────────────────────── */
+    /* All pairs stack full-width — equal height throughout */
+    .wc-pairs { display: flex; flex-direction: column; gap: 1.4rem; }
+
+    /* Slight tilt on hiking images for hand-composed feel */
+    .hiking-grid img:nth-child(2) { transform: rotate(0.6deg); }
+    .hiking-grid img:nth-child(3) { transform: rotate(-0.5deg); }
+    .hiking-grid img:nth-child(2):hover { transform: rotate(0.6deg) scale(1.015); }
+    .hiking-grid img:nth-child(3):hover { transform: rotate(-0.5deg) scale(1.015); }
+
+    /* Vol gallery — alternating micro-tilts */
+    .vol-gallery img:nth-child(3n+1) { transform: rotate(0.4deg); }
+    .vol-gallery img:nth-child(3n+2) { transform: rotate(-0.3deg); }
+    .vol-gallery img:nth-child(3n+1):hover { transform: rotate(0.4deg) scale(1.02); }
+    .vol-gallery img:nth-child(3n+2):hover { transform: rotate(-0.3deg) scale(1.02); }
+
+    /* Right-now — gradient left border instead of flat */
+    .right-now {
+      border-left: 3px solid;
+      border-image: linear-gradient(to bottom, var(--steel), var(--sky)) 1;
+    }
+
+    /* About section first paragraph — real lead text */
+    #about { position: relative; }
+    #about::before {
+      content: '';
+      position: absolute;
+      top: 5.5rem; left: 0;
+      width: 3px; height: 3.5rem;
+      background: linear-gradient(to bottom, var(--blue), transparent);
+    }
+
+    /* Varied section borders — not all the same */
+    #work { border-top: 2px solid var(--border); }
+    #hobbies { border-top-width: 1px; border-top-style: dashed; }
+
+    /* ── KEYFRAMES ───────────────────────────────────── */
+    @keyframes heroUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes heroFade {
+      from { opacity: 0; transform: scale(1.04); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes galleryIn {
+      from { opacity: 0; transform: scale(0.93) translateY(14px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes shimmer {
+      0%   { background-position: -200% 0; }
+      100% { background-position:  200% 0; }
+    }
+
+    /* Hero entrance (above fold — no IntersectionObserver needed) */
+    .hero-text h1 {
+      animation: heroUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+    }
+    .hero-text p {
+      animation: heroUp 0.9s cubic-bezier(0.22,1,0.36,1) 0.28s both;
+    }
+    .hero-image {
+      animation: heroFade 1.1s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+    }
+
+    /* Nav hover underline */
+    .nav-links a { position: relative; }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 100%; height: 1px;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.25s ease;
+    }
+    .nav-links a:hover::after,
+    .nav-links a.active::after { transform: scaleX(1); }
+
+    /* Hobby h3 underline draw on scroll */
+    .hobby-h3 {
+      position: relative;
+      border-bottom: none;
+      padding-bottom: 0.45rem;
+    }
+    .hobby-h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px; width: 100%;
+      background: var(--blue);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.65s cubic-bezier(0.22,1,0.36,1) 0.15s;
+    }
+    .hiking-section .hobby-h3::after { background: var(--steel); }
+    .reading-group  .hobby-h3::after { background: var(--sky); }
+    .reveal.visible .hobby-h3::after { transform: scaleX(1); }
+
+    /* Watercolour pair hover — painting saturates, photo dims */
+    .wc-imgs img { transition: filter 0.45s ease, opacity 0.45s ease; }
+    .wc-pair:hover .wc-imgs img:first-child { opacity: 0.82; filter: brightness(0.94); }
+    .wc-pair:hover .wc-imgs img:last-child  { filter: saturate(1.18) brightness(1.04); }
+
+    /* PDF thumb shimmer while canvas is empty */
+    .pdf-thumb:not([width]) {
+      background: linear-gradient(90deg, var(--cream) 25%, #e8e3d8 50%, var(--cream) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      width: 80px; height: 108px;
+    }
+    .pdf-thumb[width] { background: none; animation: none; }
+
+    /* ── PDF THUMBNAILS ──────────────────────────────── */
+    .pdf-preview-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .pdf-thumb-anchor { flex-shrink: 0; display: block; }
+    .pdf-thumb {
+      width: 80px;
+      height: auto;
+      display: block;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      box-shadow: 0 3px 12px rgba(44,40,37,0.12);
+      cursor: pointer;
+      transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .pdf-thumb:hover {
+      box-shadow: 0 6px 20px rgba(44,40,37,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ───────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────── */
+    @media (max-width: 760px) {
+      #hello {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .hero-image {
+        order: -1;
+        height: 56vw;
+        min-height: 240px;
+      }
+      .hero-text {
+        padding: 2.5rem 1.5rem 3rem;
+      }
+
+      .nav-toggle { display: flex; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0.7rem;
+        position: absolute;
+        top: 52px;
+        left: 0; right: 0;
+        background: rgba(243,245,249,0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 1.25rem 2rem;
+        z-index: 199;
+      }
+      .nav-links.open { display: flex; }
+
+      .section-block { padding: 3.5rem 1.5rem; }
+
+      .wc-pairs { grid-template-columns: 1fr; }
+      .wc-imgs img { height: 180px; }
+      .hiking-grid, .hiking-grid--four { grid-template-columns: 1fr 1fr; }
+      .hiking-grid img { height: 180px; }
+      .hiking-grid img:first-child { grid-column: span 2; height: 200px; }
+      .hiking-grid--four img:first-child { grid-column: span 2; height: 200px; }
+      .dog-section { grid-template-columns: 1fr; }
+      .dog-section img { height: 220px; }
+      .reading-section { grid-template-columns: 1fr; }
+      .reading-outdoor { height: 300px; }
+      .book-cover { width: 130px; }
+      .lego-grid { grid-template-columns: 1fr; }
+      .lego-grid img { height: 240px; }
+
+      .work-imgs img { height: 130px; }
+      .tech-diagram-box { padding: 1.25rem; }
+      .tech-diagram-box img { max-height: 220px; }
+      .uni-banner { height: 160px; }
+      .uni-banner-text h3 { font-size: 1.15rem; }
+      .vol-gallery { grid-template-columns: repeat(2, 1fr); }
+      .vol-gallery img { height: 170px; }
+      #lightbox { padding: 3.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ──────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#hello" class="nav-name">Matilde Barros</a>
+      <button class="nav-toggle" aria-label="Open menu" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hello">Hello</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#academic">Academic</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#volunteering">Volunteering</a></li>
+        <li><a href="#hobbies">Hobbies</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section id="hello">
+    <div class="hero-text">
+      <h1>Hi! I'm <em>Matilde</em>.<br>Nice to meet you!</h1>
+      <p>I'm an aerospace engineering student at TU Delft, originally from Portugal. This is the part of me a CV doesn't show.</p>
+    </div>
+    <div class="hero-image">
+      <!-- Profile photo: me with a hot-air balloon over a sea of clouds -->
+      <img src="Images/Profile.jpeg" alt="Matilde in front of a hot-air balloon floating above a sea of clouds" loading="eager">
+    </div>
+  </section>
+
+  <!-- ── ABOUT ─────────────────────────────────────────── -->
+  <div class="section-block reveal" id="about">
+    <p class="eyebrow">A little about me</p>
+    <p>I am an aerospace engineering student specialising in structures and materials for space, and aerospace has held my attention for as long as I can remember. What sustains it is the central question of structural engineering: not only whether a design works, but precisely why, and whether it will hold under the conditions it was built for. Structures and materials are where my curiosity is strongest, and pursuing that interest is what brought me to Delft.</p>
+    <p>I created this site because a CV and a profile capture only a fraction of who someone is. Alongside engineering, I am someone who has painted since childhood, who is happiest outdoors and working with her hands, and who is consistently drawn to teaching and to working alongside others. This page is intended to offer a fuller picture than a list of titles and grades can &mdash; both the engineer and the person behind it.</p>
+  </div>
+
+  <!-- ── ACADEMIC ───────────────────────────────────────── -->
+  <div class="section-block" id="academic">
+    <p class="eyebrow">Academic</p>
+    <h2>Where I've studied<span class="sub">and what I made while I was there</span></h2>
+
+    <!-- TU Delft ---------------------------------------- -->
+    <div class="uni-block reveal">
+      <div class="uni-banner">
+        <img src="Images/TUDELFT.jpg" alt="TU Delft campus">
+        <div class="uni-banner-overlay"></div>
+        <div class="uni-banner-text">
+          <h3>TU Delft</h3>
+          <div class="degree-line">MSc Aerospace Engineering &mdash; 2025 &ndash; Present</div>
+          <a href="67ba3935-5c25-43a3-bb1d-29c6abb1292f.pdf" target="_blank" class="doc-link" aria-label="Open TU Delft transcript of records PDF">
+            Transcript of Records &rarr;
+          </a>
+        </div>
+      </div>
+      <p class="uni-track">Track: Aerospace Structures and Materials &mdash; Structures for Space</p>
+
+      <div class="ist-list">
+        <!-- AE4ASM003 Linear Modelling homeworks — Q1 -->
+        <div class="ist-item reveal reveal-delay-1">
+          <div class="ist-row">
+            <h4>Linear Modelling (incl. F.E.M)</h4>
+            <span class="date-tag">2025/26 Q1</span>
+          </div>
+          <p class="pt-note">Course AE4ASM003</p>
+          <p>An introduction to finite-element analysis of structures under load, with an emphasis on understanding the reliability and limitations of each model.</p>
+          <div class="hw-list">
+            <div class="hw-entry">
+              <p><strong>Homework 3</strong> — Static FEM analysis, computing displacement fields and stress distributions, applying boundary conditions, and assessing the influence of mesh refinement on accuracy.</p>
+              <a href="LinearModelingHomework3.pdf" target="_blank" class="pdf-link" aria-label="Linear Modelling Homework 3 PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="hw-entry">
+              <p><strong>Homework 4</strong> — More complex geometries and loading cases, examining how discretisation choices affect stress and deflection results in plate and shell structures.</p>
+              <a href="LinearModelingHomework4.pdf" target="_blank" class="pdf-link" aria-label="Linear Modelling Homework 4 PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materials for Space — Q2 -->
+        <div class="ist-item reveal reveal-delay-1">
+          <div class="ist-row">
+            <h4>Materials for Space &mdash; Poster</h4>
+            <span class="date-tag">2025/26 Q2</span>
+          </div>
+          <p class="pt-note">Course AE4ASM525</p>
+          <p>An examination of the principal environmental degradation mechanisms affecting spacecraft structures in low Earth orbit and deep space &mdash; atomic oxygen erosion, thermal cycling, UV radiation and outgassing &mdash; and the selection of suitable materials, including carbon-fibre-reinforced polymers, specialised alloys and protective coatings, evaluated against stiffness-to-weight constraints for long-term orbital survivability. The poster format required every argument to be made through data rather than text.</p>
+          <a href="materials-for-space.pdf" target="_blank" class="pdf-link" aria-label="Open Materials for Space poster PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <!-- Machine Learning for Materials Design — Q3 -->
+        <div class="ist-item reveal reveal-delay-1">
+          <div class="ist-row">
+            <h4>Machine Learning for Materials Design &mdash; Report</h4>
+            <span class="date-tag">2025/26 Q3</span>
+          </div>
+          <p class="pt-note">Course MS43040 &mdash; <em>Physics-consistent stress-strain modelling of anisotropic hyperelastic heart tissue</em></p>
+          <p>A machine-learning approach to modelling the stress-strain behaviour of anisotropic hyperelastic heart tissue, constrained to remain consistent with the underlying physics rather than fitting data alone. The work developed and validated a data-driven model capable of capturing the highly non-linear, direction-dependent mechanical response of biological tissue &mdash; an application where physical consistency is essential to producing predictions that remain meaningful beyond the training data.</p>
+          <a href="ml-materials.pdf" target="_blank" class="pdf-link" aria-label="Open ML for Materials Design report PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <!-- AE4ASM505 Non-linear Modelling homeworks — Q3 -->
+        <div class="ist-item reveal reveal-delay-2">
+          <div class="ist-row">
+            <h4>Non-linear Modelling (using F.E.M.)</h4>
+            <span class="date-tag">2025/26 Q3</span>
+          </div>
+          <p class="pt-note">Course AE4ASM505</p>
+          <p>A study of structural behaviour where linear assumptions no longer hold.</p>
+          <div class="hw-list">
+            <div class="hw-entry">
+              <p><strong>Homework 1</strong> — Geometric non-linearity: identifying when large-deformation effects invalidate the linear model, and applying iterative solution procedures such as the Gauss-Newton and Levenberg-Marquardt methods.</p>
+              <a href="NonLinearModelingHomework1.pdf" target="_blank" class="pdf-link" aria-label="Non-Linear Modelling Homework 1 PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+            </div>
+            <div class="hw-entry">
+              <p><strong>Homework 2</strong> — Material non-linearity and plasticity, benchmarking the results against the linear case to quantify the practical significance of the added complexity.</p>
+              <a href="NonLinearModelingHomework2.pdf" target="_blank" class="pdf-link" aria-label="Non-Linear Modelling Homework 2 PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right now -->
+      <div class="right-now reveal reveal-delay-2">
+        <h4>Right now (2025/26)</h4>
+        <p>This term I am focused on spacecraft thermal design and spacecraft structures development, alongside spatial AI for industrial automation and the Trinity Exercise, a hands-on composites manufacturing module.</p>
+        <div class="right-now-imgs">
+          <!-- Small rover from the Spatial AI course -->
+          <img src="Images/SpatialAICourse.jpeg" alt="Small lab rover from the Spatial AI for Industrial Automation course" loading="lazy">
+          <!-- Composites/manufacturing from the Trinity Exercise -->
+          <img src="Images/TrinityCourse1.jpeg" alt="Composites manufacturing during the Trinity Exercise" loading="lazy">
+          <img src="Images/TrinityCourse2.jpeg" alt="Hands-on structural work during the Trinity Exercise" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- IST ------------------------------------------------ -->
+    <div class="uni-block reveal">
+      <div class="uni-banner">
+        <img src="Images/Tecnico.jpg" alt="Instituto Superior Técnico campus, Lisbon">
+        <div class="uni-banner-overlay"></div>
+        <div class="uni-banner-text">
+          <h3>Instituto Superior Técnico (IST), Lisbon</h3>
+          <div class="degree-line">BSc Aerospace Engineering &mdash; 2022 &ndash; 2025 &middot; Final grade 17/20</div>
+          <a href="ist1106707_DEGREE_CERTIFICATE_20250829-105446_LEAER21_1ST_CYCLE_EN-GB%20(2).pdf" target="_blank" class="doc-link" aria-label="Open IST degree certificate PDF">
+            Degree Certificate &rarr;
+          </a>
+        </div>
+      </div>
+      <p class="uni-track">Academic Merit Award 2023/24 and 2024/25</p>
+
+      <div class="ist-list">
+        <div class="ist-item reveal">
+          <div class="ist-row">
+            <h4>Integrated Project &mdash; Fixed-Wing VTOL UAV for Medical Logistics</h4>
+            <span class="date-tag">2024/25</span>
+          </div>
+          <p>The conceptual design of a fixed-wing VTOL drone for delivering medical supplies in regions with limited ground infrastructure, built around a case study of Vancouver Island, Canada. Using a hybrid propulsion system, the aircraft was designed for both urgent long-range deliveries to isolated communities and frequent short-range transfers between healthcare facilities. The configuration was selected through the Analytic Hierarchy Process and refined with iterative aerodynamic, stability and structural analysis to ensure airworthiness. The most substantial project of my degree, and the one I consider my strongest piece of undergraduate work. Large file (~10&nbsp;MB).</p>
+          <a href="integrated-project.pdf" target="_blank" class="pdf-link" aria-label="Open Integrated Project PDF (large file, about 10 MB)">
+            Open PDF <span aria-hidden="true">&rarr;</span> <span class="size-note">(~10 MB)</span>
+          </a>
+        </div>
+
+        <div class="ist-item reveal">
+          <div class="ist-row">
+            <h4>Flight Control &mdash; Longitudinal Control System for a Mirage 2000</h4>
+            <span class="date-tag">2024/25</span>
+          </div>
+          <p class="pt-note">(originally in Portuguese)</p>
+          <p>The design, analysis and simulation of a longitudinal flight control system. The work progressed from the state-space formulation of the aircraft&rsquo;s open-loop short-period and phugoid dynamics, through a root-locus stability augmentation system, to a Linear Quadratic Regulator for optimal velocity and climb-angle tracking. The controller&rsquo;s robustness was then validated against real-world constraints &mdash; sensor noise, time delays, and actuator rate and saturation limits &mdash; during a dynamic terrain-following mission.</p>
+          <a href="flight-control.pdf" target="_blank" class="pdf-link" aria-label="Open Flight Control PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+        </div>
+
+        <div class="ist-item reveal">
+          <div class="ist-row">
+            <h4>Flight Testing &mdash; Experimental Aeronautical Data Analysis</h4>
+            <span class="date-tag">2024/25</span>
+          </div>
+          <p class="pt-note">(originally in Portuguese)</p>
+          <p>The processing and analysis of experimental flight data across three areas: Fast Fourier Transform analysis to isolate the frequency content of multi-component accelerometer signals; a custom peak-valley algorithm to count fatigue load cycles from a Dornier-Dassault Alpha Jet; and an evaluation of an EGNOS/GPS satellite navigation system against ICAO civil-aviation standards, including the analysis of protection levels and the isolation of integrity-violation events.</p>
+          <a href="flight-testing.pdf" target="_blank" class="pdf-link" aria-label="Open Flight Testing PDF">Open PDF <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WORK ──────────────────────────────────────────── -->
+  <div class="section-block" id="work">
+    <p class="eyebrow">Work</p>
+    <h2>What I've been <em>building</em></h2>
+
+    <!-- Da Vinci Satellite -->
+    <div class="work-item featured-work reveal">
+      <div class="work-row has-badge">
+        <span class="work-title">Structures Engineer &mdash; Da Vinci Satellite</span>
+        <div class="work-row-right">
+          <img src="Images/Da_Vinci_satellite_logo.png" alt="Da Vinci satellite mission logo — Elevating Education" class="mission-badge" loading="lazy">
+          <span class="date-tag">Mar 2026 &ndash; Present</span>
+        </div>
+      </div>
+      <div class="work-org">ESA &ldquo;Fly Your Satellite!&rdquo;</div>
+      <p class="work-desc">I work on the structural verification of the Da Vinci satellite, dedicating around eight hours per week to ensuring its structure can withstand launch. My responsibilities include static and modal FEM analyses of the payload components, and the development of a simplified whole-satellite model to support system-level structural verification ahead of submission to ESA. Contributing to mission hardware intended for orbit is, for me, the clearest expression of why I chose this discipline.</p>
+      <!-- FEM diagram in a dark technical box — the background is part of the sim screenshot -->
+      <div class="tech-diagram-box">
+        <img src="Images/Da_Vinci_satellite.png" alt="Exploded FEM diagram of the Da Vinci CubeSat showing the mesh model under load" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Wind Energy MOOC -->
+    <div class="work-item reveal">
+      <div class="work-row has-badge">
+        <span class="work-title">Teaching Assistant &mdash; Wind Energy MOOC</span>
+        <div class="work-row-right">
+          <img src="Images/tudelft_logo.png" alt="TU Delft logo" class="school-badge" loading="lazy">
+          <span class="date-tag">Apr 2026 &ndash; Present</span>
+        </div>
+      </div>
+      <div class="work-org">TU Delft &mdash; Teach-the-Teacher programme</div>
+      <p class="work-desc">I contribute to the development of TU Delft&rsquo;s first Teach-the-Teacher course on wind energy, dedicating around six to eight hours per week to writing storyboards, designing content templates, and sourcing visual and animation references with the academic lead. The course is intended to give primary and secondary school teachers the resources to introduce wind energy into their classrooms, an objective I find particularly worthwhile, given the importance of engaging young people with renewable energy.</p>
+    </div>
+
+    <!-- Aerospace Structures MOOC -->
+    <div class="work-item reveal">
+      <div class="work-row has-badge">
+        <span class="work-title">Teaching Assistant &amp; Course Moderator &mdash; Aerospace Structures MOOC</span>
+        <div class="work-row-right">
+          <img src="Images/tudelft_logo.png" alt="TU Delft logo" class="school-badge" loading="lazy">
+          <span class="date-tag">Mar 2026 &ndash; Present</span>
+        </div>
+      </div>
+      <div class="work-org">TU Delft &mdash; edX</div>
+      <p class="work-desc">I dedicate roughly two to four hours per week to supporting more than 2,000 learners worldwide on the <a href="https://learningforlife.tudelft.nl/introduction-to-aerospace-structures-and-materials/" target="_blank" rel="noopener"><em>Introduction to Aerospace Structures and Materials</em></a> MOOC, moderating technical discussions and resolving conceptual questions. The experience has reinforced my view that the quality of teaching directly determines whether students persist with difficult material.</p>
+    </div>
+
+    <!-- AeroTéc -->
+    <div class="work-item reveal">
+      <div class="work-row has-badge">
+        <span class="work-title">Structural Design &amp; Prototyping &mdash; AeroTéc</span>
+        <div class="work-row-right">
+          <img src="Images/AeroT%C3%A9c_Logo.png" alt="AeroTéc logo" class="school-badge" loading="lazy">
+          <span class="date-tag">2023 &ndash; 2024</span>
+        </div>
+      </div>
+      <div class="work-org">Model aircraft student team</div>
+      <p class="work-desc">Over a one-year cycle, I designed and manufactured a radio-controlled aircraft within a multidisciplinary student team, carrying out aerodynamic analysis in XFLR5 alongside the structural design and hands-on prototyping. It was my first real experience of taking an aircraft from concept to something that genuinely flew, and the moment it first left the ground was another confirmation that this is the work I want to dedicate myself to.</p>
+      <div class="work-imgs">
+        <img src="Images/ACEP1.jpeg" alt="Aircraft prototype build, early assembly stage" loading="lazy">
+        <img src="Images/ACEP2.jpeg" alt="Aircraft prototype mid-construction" loading="lazy">
+        <img src="Images/ACEP3.jpeg" alt="Aircraft prototype nearing completion" loading="lazy">
+        <img src="Images/ACEP4.jpeg" alt="Holding the completed aircraft radio controller" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Maths Tutor -->
+    <div class="work-item reveal">
+      <div class="work-row has-badge">
+        <span class="work-title">Mathematics Tutor</span>
+        <div class="work-row-right">
+          <img src="Images/EscolaATL.png" alt="Escola D. Filipa de Lencastre logo" class="school-badge" loading="lazy">
+          <span class="date-tag">Jan 2025 &ndash; Jul 2025</span>
+        </div>
+      </div>
+      <div class="work-org">Escola D. Filipa de Lencastre (ATL), Lisbon</div>
+      <p class="work-desc">I tutored children aged 10&ndash;12 in mathematics for approximately ten hours per week, supporting their numeracy and problem-solving. Working with this age group reinforced my interest in teaching and in helping younger students build confidence with technical subjects.</p>
+    </div>
+  </div>
+
+  <!-- ── VOLUNTEERING ───────────────────────────────────── -->
+  <div class="section-block" id="volunteering">
+    <p class="eyebrow">Volunteering</p>
+    <h2>Time given to things that <em>matter</em></h2>
+
+    <!-- Just a Change -->
+    <div class="vol-item reveal">
+      <div class="vol-row">
+        <span class="vol-title">Just a Change</span>
+        <span class="date-tag">2024</span>
+      </div>
+      <p class="vol-desc">Just a Change is a Portuguese NGO that renovates and rebuilds homes for families living in inadequate or unsafe housing conditions, with volunteers carrying out the construction work directly. In the summer of 2024 I took part in a one-month programme rebuilding a house in a village in the district of Coimbra, and I subsequently continued to support the organisation&rsquo;s projects in the district of Lisbon. The work is physically demanding and entirely practical, and it captures something central to how I like to contribute: directly, with my hands, on something that makes a concrete difference to the people it serves.</p>
+      <div class="vol-gallery">
+        <img src="Images/Volunteering-Just1.jpeg" alt="Just a Change volunteering — the team at work" loading="lazy">
+        <img src="Images/Volunteering-Just2.jpeg" alt="Just a Change — renovation in progress" loading="lazy">
+        <img src="Images/Volunteering-Just3.jpeg" alt="Just a Change — hands-on demolition work" loading="lazy">
+        <img src="Images/Volunteering-Just4.jpeg" alt="Just a Change — group photo" loading="lazy">
+        <img src="Images/Volunteering-Just5.jpeg" alt="Just a Change — repair work" loading="lazy">
+        <img src="Images/Volunteering-Just6.jpeg" alt="Just a Change — team collaboration" loading="lazy">
+        <img src="Images/Volunteering-Just7.jpeg" alt="Just a Change — construction work" loading="lazy">
+        <img src="Images/Volunteering-Just8.jpeg" alt="Just a Change — finished work" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Web Summit -->
+    <div class="vol-item reveal">
+      <div class="vol-row">
+        <span class="vol-title">Web Summit, Lisbon</span>
+        <span class="date-tag">Nov 2023</span>
+      </div>
+      <p class="vol-desc">I volunteered at Web Summit, one of Europe&rsquo;s largest technology conferences, supporting logistics and visitor services for an event that brought more than 70,000 attendees to Lisbon over three days. It was a valuable opportunity to experience the scale and breadth of the technology sector, and to contribute to an event connecting people from across the industry.</p>
+      <div class="vol-gallery" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        <img src="Images/Volunteering-WebSummit.jpeg" alt="Volunteering at Web Summit Lisbon, November 2023" loading="lazy" style="height: 200px;">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HOBBIES ────────────────────────────────────────── -->
+  <div class="section-block" id="hobbies">
+    <p class="eyebrow">Hobbies</p>
+    <h2>The rest of <em>me</em></h2>
+
+    <!-- Watercolours -->
+    <div class="wc-section reveal">
+      <h3 class="hobby-h3">Watercolours</h3>
+      <p class="hobby-intro">I have drawn and painted since I was a child. Recently I have been working in watercolour, painting from photographs I have taken myself. I find a particular satisfaction in it, first choosing the moment worth keeping, and then keeping it a second time, in paint. Each pair below shows the original photograph alongside the painting it became.</p>
+      <div class="wc-pairs">
+        <div class="wc-pair">
+          <div class="wc-imgs">
+            <img src="Images/ImageWater1.jpeg" alt="Photo: my dog in lush greenery — reference for this painting" loading="lazy">
+            <img src="Images/Water1.jpeg" alt="Watercolour painting of my dog in greenery" loading="lazy">
+          </div>
+          <p class="wc-caption">my dog in the garden</p>
+        </div>
+        <div class="wc-pair">
+          <div class="wc-imgs">
+            <img src="Images/ImageWater2.jpeg" alt="Photo: coast at sunset with a boat — reference for this painting" loading="lazy">
+            <img src="Images/Water2.jpeg" alt="Watercolour painting of a coastal sunset with a boat" loading="lazy">
+          </div>
+          <p class="wc-caption">the coast at golden hour</p>
+        </div>
+        <div class="wc-pair">
+          <div class="wc-imgs">
+            <img src="Images/ImageWater3.jpeg" alt="Photo: desert dunes with camels — reference for this painting" loading="lazy">
+            <img src="Images/Water3.jpeg" alt="Watercolour painting of desert dunes with camels" loading="lazy">
+          </div>
+          <p class="wc-caption">somewhere in the Sahara</p>
+        </div>
+        <div class="wc-pair">
+          <div class="wc-imgs">
+            <img src="Images/ImageWater4.jpeg" alt="Photo: bay and marina with mountains in the background — reference for this painting" loading="lazy">
+            <img src="Images/Water4.jpeg" alt="Watercolour painting of a bay and marina with mountains" loading="lazy">
+          </div>
+          <p class="wc-caption">a bay from a mountain trail</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hiking -->
+    <div class="hiking-section reveal">
+      <h3 class="hobby-h3">Hiking</h3>
+      <p class="hobby-intro">Having grown up surrounded by nature, I have never been comfortable indoors for very long. Hiking is where I think most clearly and where I feel most myself. Here in the Netherlands, where the landscape is rather flatter, I have happily traded the climbs for long bike rides along the canals instead.</p>
+      <div class="hiking-grid hiking-grid--four">
+        <img src="Images/Hicking1.jpeg" alt="Hiking on a trail with my dog" loading="lazy">
+        <img src="Images/Hicking2.jpeg" alt="A lake on a mountain hike" loading="lazy">
+        <img src="Images/Hicking3.jpeg" alt="A waterfall on a hiking trail" loading="lazy">
+        <img src="Images/biking.jpeg" alt="Cycling along the canals in the Netherlands" loading="lazy">
+      </div>
+    </div>
+
+
+    <!-- Reading — wrapped so the carousel groups both images -->
+    <div class="reading-group reveal">
+      <div class="reading-section">
+        <!-- The book cover -->
+        <img src="Images/Reading.jpeg" alt="The book Foster by Claire Keegan" class="book-cover" loading="lazy">
+        <div class="reading-text">
+          <h3 class="hobby-h3">Reading</h3>
+          <p>I am currently reading <em>Foster</em> by Claire Keegan. I tend to read slowly and attentively, stopping to reread and to let things settle, and outdoors whenever the weather allows.</p>
+        </div>
+      </div>
+      <!-- Full-width outdoor reading photo -->
+      <img src="Images/Reading1.jpeg" alt="Reading outside with my dog beside me" class="reading-outdoor" loading="lazy">
+      <p class="reading-caption">the ideal conditions, honestly</p>
+    </div>
+
+    <!-- Lego -->
+    <div class="lego-section reveal">
+      <h3 class="hobby-h3">Lego</h3>
+      <p class="hobby-intro">I have a soft spot for building Lego, and my two favourite sets capture the two sides of me rather neatly. The first is the Space Shuttle Discovery, with the Hubble Space Telescope tucked inside its payload bay, the obvious favourite. The second is the Lego bonsai.</p>
+      <div class="lego-grid">
+        <img src="Images/lego1.jpeg" alt="Lego Space Shuttle Discovery with Hubble Space Telescope" loading="lazy">
+        <img src="Images/lego2.jpeg" alt="Lego bonsai tree" loading="lazy">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LIGHTBOX ─────────────────────────────────────────── -->
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <button id="lb-prev" aria-label="Previous image">&#8249;</button>
+    <img id="lb-img" src="" alt="">
+    <button id="lb-next" aria-label="Next image">&#8250;</button>
+    <button id="lb-close" aria-label="Close image">&times;</button>
+    <span id="lb-counter"></span>
+  </div>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <p>&copy; Matilde Barros 2026</p>
+  </footer>
+
+  <script>
+    // Scroll reveal via IntersectionObserver
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    revealEls.forEach(el => io.observe(el));
+
+    // Active nav highlight
+    const sections = document.querySelectorAll('[id]');
+    const navAs = document.querySelectorAll('.nav-links a');
+    const navIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navAs.forEach(a => a.classList.remove('active'));
+          const match = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+          if (match) match.classList.add('active');
+        }
+      });
+    }, { threshold: 0.35 });
+    sections.forEach(s => navIO.observe(s));
+
+    // Lightbox with carousel
+    const lb        = document.getElementById('lightbox');
+    const lbImg     = document.getElementById('lb-img');
+    const lbPrev    = document.getElementById('lb-prev');
+    const lbNext    = document.getElementById('lb-next');
+    const lbCounter = document.getElementById('lb-counter');
+
+    // Containers that group related images into a browsable set
+    const GROUPS = [
+      '.vol-gallery', '.work-imgs', '.wc-pairs',
+      '.hiking-grid', '.right-now-imgs', '.reading-group', '.lego-grid'
+    ];
+
+    let gallery = [];
+    let galIdx  = 0;
+
+    function getGroup(clicked) {
+      for (const sel of GROUPS) {
+        const c = clicked.closest(sel);
+        if (c) return [...c.querySelectorAll('img')];
+      }
+      return [clicked];
+    }
+
+    function showAt(idx) {
+      galIdx = (idx + gallery.length) % gallery.length;
+      lbImg.src = gallery[galIdx].src;
+      lbImg.alt = gallery[galIdx].alt;
+      const multi = gallery.length > 1;
+      lbPrev.hidden   = !multi;
+      lbNext.hidden   = !multi;
+      lbCounter.hidden = !multi;
+      if (multi) lbCounter.textContent = (galIdx + 1) + ' / ' + gallery.length;
+    }
+
+    function openLb(clicked) {
+      gallery = getGroup(clicked);
+      showAt(gallery.indexOf(clicked));
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLb() {
+      lb.classList.remove('open');
+      lbImg.src = '';
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('img').forEach(img => {
+      img.addEventListener('click', () => openLb(img));
+    });
+    lb.addEventListener('click',   e  => { if (e.target === lb) closeLb(); });
+    document.getElementById('lb-close').addEventListener('click', closeLb);
+    lbPrev.addEventListener('click', e  => { e.stopPropagation(); showAt(galIdx - 1); });
+    lbNext.addEventListener('click', e  => { e.stopPropagation(); showAt(galIdx + 1); });
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLb();
+      if (e.key === 'ArrowLeft')   showAt(galIdx - 1);
+      if (e.key === 'ArrowRight')  showAt(galIdx + 1);
+    });
+
+    // PDF first-page thumbnails
+    function initPdfThumbs() {
+      if (typeof pdfjsLib === 'undefined') return;
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      const links = [...document.querySelectorAll('#academic .pdf-link')].filter(a =>
+        (a.getAttribute('href') || '').endsWith('.pdf')
+      );
+
+      links.forEach(link => {
+        const href = link.getAttribute('href');
+
+        const previewArea = document.createElement('div');
+        previewArea.className = 'pdf-preview-area';
+
+        const thumbA = document.createElement('a');
+        thumbA.href = href; thumbA.target = '_blank'; thumbA.rel = 'noopener';
+        thumbA.className = 'pdf-thumb-anchor';
+        thumbA.setAttribute('aria-label', 'Open PDF preview');
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'pdf-thumb';
+        thumbA.appendChild(canvas);
+
+        previewArea.appendChild(thumbA);
+        previewArea.appendChild(link.cloneNode(true));
+        link.replaceWith(previewArea);
+
+        pdfjsLib.getDocument(href).promise
+          .then(pdf => pdf.getPage(1))
+          .then(page => {
+            const vp = page.getViewport({ scale: 1.5 });
+            canvas.width = vp.width;
+            canvas.height = vp.height;
+            return page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          })
+          .catch(() => { /* silently skip failed thumbs */ });
+      });
+    }
+    initPdfThumbs();
+
+    // Mobile nav toggle
+    function toggleNav() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+    document.querySelectorAll('.nav-links a').forEach(a =>
+      a.addEventListener('click', () =>
+        document.getElementById('navLinks').classList.remove('open')
+      )
+    );
+  </script>
+
+</body>
+</html>
